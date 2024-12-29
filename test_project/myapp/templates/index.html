@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
+
+
+  <title>Device Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+   .container2 {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 0 auto;
+  max-height: 600px; /* Optional: set a max height */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .input-box {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+
+    .toggle-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+    }
+
+    .toggle-button {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .circle-btn {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #0078d4;
+      border-radius: 50%;
+      background-color: #fff;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .circle-btn.active {
+      background-color: #0078d4;
+    }
+
+    .appliance-container {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .appliance-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .appliance-container::-webkit-scrollbar-thumb {
+      background-color: #0078d4;
+      border-radius: 10px;
+    }
+
+    .appliance-container::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+    }
+
+    .appliance-box {
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-width: 200px;
+      background-color: #eaf4ff;
+      border: 1px solid #0078d4;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .health-heading {
+    position:relative;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .health-bar {
+    position:relative;
+      display: flex;
+      height: 15px;
+      border-radius: 5px;
+    }
+
+    .health-bar div {
+height:100%;
+    }
+
+    .red {
+      width: 30%;
+      background-color: #ff4d4d;
+    }
+
+    .orange {
+      width: 30%;
+      background-color: #ffcc00;
+    }
+
+    .green {
+
+      width: 40%;
+      background-color: #4caf50;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .section {
+        padding: 10px;
+      }
+
+      .row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .input-box {
+        width: 100%;
+      }
+
+     #appliance-container {
+  display: flex;
+  flex-wrap: nowrap; /* Prevents wrapping to the next line */
+  gap: 20px; /* Space between appliance boxes */
+  overflow-x: auto; /* Allows horizontal scrolling if the container overflows */
+}
+
+.appliance-box {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between input and button */
+  background-color: #f1f1f1;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 20px;
+      }
+
+      .health-bar {
+        height: 10px;
+      }
+
+     #appliance-container {
+  display: flex;
+  flex-wrap: nowrap; /* Prevents wrapping to the next line */
+  gap: 15px; /* Space between appliance boxes */
+  overflow-x: auto; /* Allows horizontal scrolling if the container overflows */
+}
+
+.appliance-box {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between input and button */
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+      .input-box {
+        padding: 8px;
+      }
+    }
+    /* style.css */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+:root {
+  --dark-grey: #333333;
+  --medium-grey: #636363;
+  --light-grey: #eeeeee;
+  --ash: #f4f4f4;
+  --primary-color: #2b72fb;
+  --white: white;
+  --border: 1px solid var(--light-grey);
+  --shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+body {
+  font-family: inherit;
+  background-color: var(--white);
+  color: var(--dark-grey);
+  letter-spacing: -0.4px;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+
+.btn {
+  display: block;
+  background-color: var(--primary-color);
+  color: var(--white);
+  text-align: center;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 5px;
+}
+
+.icon {
+  padding: 0.5rem;
+  background-color: var(--light-grey);
+  border-radius: 10px;
+}
+
+.logo {
+  margin-right: 1.5rem;
+}
+
+#nav-menu {
+  border-bottom: var(--border);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 2rem;
+  height: 90px;
+  padding: 1.2rem 3rem;
+}
+
+.menu {
+  position: relative;
+  background: var(--white);
+}
+
+.menu-bar li:first-child .dropdown {
+  flex-direction: initial;
+  min-width: 480px;
+}
+
+.menu-bar li:first-child ul:nth-child(1) {
+  border-right: var(--border);
+}
+
+.menu-bar li:nth-child(n + 2) ul:nth-child(1) {
+  border-bottom: var(--border);
+}
+
+.menu-bar .dropdown-link-title {
+  font-weight: 600;
+}
+
+.menu-bar .nav-link {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.6px;
+  padding: 0.3rem;
+  min-width: 60px;
+  margin: 0 0.6rem;
+}
+
+.menu-bar .nav-link:hover,
+.dropdown-link:hover {
+  color: var(--primary-color);
+}
+
+.nav-start,
+.nav-end,
+.menu-bar,
+.right-container,
+.right-container .search {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  min-width: 230px;
+  background-color: var(--white);
+  border-radius: 10px;
+  position: absolute;
+  top: 36px;
+  z-index: 999px;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(0.97) translateX(-5px);
+  transition: 0.1s ease-in-out;
+  box-shadow: var(--shadow);
+}
+
+.dropdown.active {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1) translateX(5px);
+}
+
+.dropdown ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.2rem;
+  font-size: 0.95rem;
+}
+
+.dropdown-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.15rem;
+}
+
+.dropdown-link {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-radius: 7px;
+  transition: 0.1s ease-in-out;
+}
+
+.dropdown-link p {
+  font-size: 0.8rem;
+  color: var(--medium-grey);
+}
+
+.right-container {
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.right-container .search {
+  position: relative;
+}
+
+.right-container img {
+  border-radius: 50%;
+}
+
+.search input {
+  background-color: var(--ash);
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem;
+  padding-left: 2.4rem;
+  font-size: 16px;
+  width: 100%;
+  border: var(--border);
+}
+
+.search .bx-search {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  font-size: 1.3rem;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+#hamburger {
+  display: none;
+  padding: 0.1rem;
+  margin-left: 1rem;
+  font-size: 1.9rem;
+}
+
+@media (max-width: 1100px) {
+  #hamburger {
+    display: block;
+  }
+
+  .container {
+    padding: 1.2rem;
+  }
+
+  .menu {
+    display: none;
+    position: absolute;
+    top: 87px;
+    left: 0;
+    min-height: 100vh;
+    width: 100vw;
+  }
+
+  .menu-bar li:first-child ul:nth-child(1) {
+    border-right: none;
+    border-bottom: var(--border);
+  }
+
+  .dropdown {
+    display: none;
+    min-width: 100%;
+    border: none !important;
+    border-radius: 5px;
+    position: static;
+    top: 0;
+    left: 0;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .menu.show,
+  .dropdown.active {
+    display: block;
+    z-index:999px;
+    background:#ffffff;
+  }
+
+  .dropdown ul {
+    padding-left: 0.3rem;
+  }
+
+  .menu-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    row-gap: 1rem;
+    padding: 2rem;
+  }
+
+  .menu-bar .nav-link {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  .menu-bar li:first-child .dropdown {
+    min-width: 100%;
+  }
+
+  .menu-bar > li:not(:last-child) {
+    padding-bottom: 0.5rem;
+    border-bottom: var(--border);
+  }
+}
+
+@media (max-width: 600px) {
+  .right-container {
+    display: flex;  /* Keeps elements in a row on small screens */
+    justify-content: flex-start;  /* Aligns items to the start of the container */
+  }
+
+  .right-container button {
+    margin-right: 10px;  /* Ensures a small gap between the button and the image */
+  }
+}
+.dropdownwifi {
+      display: none;
+      position:relative;
+      background-color: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+      padding: 10px;
+      width: 200px;
+      top: 100%;
+      right: 0;
+      margin-top:70px;
+      z-index: 100;
+    }
+    /* Style for the dropdown box */
+/* Style for the dropdown box */
+#wifi-box {
+  position: absolute;
+  top: 10px;    /* Add unit px */
+  right: 10px;  /* Add unit px */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 200px;  /* Adjust the width of the box */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.bx-wifi {
+
+    font-size: 24px;  /* Ensure a readable size */
+    color: #000;      /* Set color if needed */
+  }
+  /* Default styles for the h2 element */
+h2 {
+  left: 50px;
+  top: 120px;
+}
+
+/* Media query to hide h2 on Android (or small devices) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.scroll {
+    margin: auto;
+    width: auto;
+    overflow-x: auto;
+        scrollbar-width: none; /* For Firefox: Hides scrollbar */
+
+}
+
+.scroll ul {
+    padding: 0;
+    display: flex;
+    border-radius: 10px;
+    animation: scroll 60s infinite linear;
+}
+
+.scroll ul:hover {
+    animation-play-state: paused;
+}
+
+.scroll li {
+    margin: 0 10px;
+    list-style: none;
+    position: relative;
+    border-radius: 10px;
+}
+
+.scroll img {
+     width: 250px; /* Set a fixed width for all images */
+    height: 170px; /* Set a fixed height for all images */
+    cursor: pointer;
+    transition: 0.05s;
+    position: relative;
+    border-radius: 10px;
+    max-width: fit-content;
+}
+
+@media (max-width: 600px){
+
+.scroll img {
+     width: 150px; /* Set a fixed width for all images */
+    height: 70px; /* Set a fixed height for all images */
+    cursor: pointer;
+    transition: 0.05s;
+    position: relative;
+    border-radius: 10px;
+    max-width: fit-content;
+}
+}
+
+.scroll img:hover {
+    transform: scale(1.04);
+}
+
+@keyframes scroll {
+    from {
+        margin-left: 0%
+    }
+
+    to {
+        margin-left: -100%
+    }
+}
+#phone-text
+{
+font-size:32px;
+}
+  @media (max-width: 720px){
+
+#phone-text{
+font-size:16px;
+}
+}
+
+/* Style for each network in the box */
+.wifi-network {
+display:block;
+top: 10px;    /* Add unit px */
+  right: 10px;  /* Add unit px */
+background-color: #f1f1f1;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Hover effect for networks */
+.wifi-network:hover {
+  background-color: #ddd;
+}
+
+/* Style for the blue tick icon */
+.bx-check-circle {
+  color: #4CAF50;  /* Blue color */
+  font-size: 1.2em;
+}
+d-color: #ddd;
+}
+    /* Flexbox to align image and text in the same line */
+/* Flexbox to align image and text in the same line */
+.logo-container {
+  display: flex;
+  align-items: center; /* Vertically align the items */
+  gap: 10px; /* Space between the image and text */
+}
+
+/* Optional: Adjust image size if needed */
+.logo-container img {
+  vertical-align: middle; /* Ensure the image is vertically aligned */
+}
+
+.logo-container h3 {
+  margin-left: 20px; /* Remove any default margin around the text */
+}
+    #livestreamPage {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  height:100%;
+  background-color: #fff;
+  transition: bottom 0.5s ease-in-out;
+  padding: 20px;
+  z-index:999;
+}
+
+#livestreamPage button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+
+#livestreamPage button:hover {
+  background-color: #d32f2f;
+}
+
+  </style>
+
+</head>
+<body>
+
+{% load static %}
+
+<header id="nav-menu" aria-label="navigation bar" >
+
+    <div class="container">
+      <div class="nav-start">
+        <div class="logo-container">
+          <h3 style="margin-left:45px; margin-bottom:-40px;"><b>Prakriti Sevak</b></h3>
+
+  <img src="/static/images/Managing_crowds_during_medical_emergencies_and_disasters.-removebg-preview.png" width="40" height="45" alt="Inc Logo" />
+</div>
+
+        <nav class="menu"style="z-index:999;">
+
+          <ul class="menu-bar">
+
+            <li>
+              <button class="nav-link dropdown-btn" data-dropdown="dropdown1" aria-haspopup="true" aria-expanded="false" aria-label="browse">
+                Browse
+                <i class="bx bx-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div id="dropdown1" class="dropdown">
+                <ul role="menu">
+                  <li role="menuitem">
+                    <a class="dropdown-link" href="#best-of-the-day">
+                      <img src="https://raw.githubusercontent.com/Evavic44/responsive-navbar-with-dropdown/main/assets/icons/botd.svg" class="icon" />
+                      <div>
+                        <span class="dropdown-link-title">Best of the day</span>
+                        <p>Shorts featured today by curators</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li role="menuitem">
+                    <a class="dropdown-link" href="#featured-streams">
+                      <img src="https://raw.githubusercontent.com/Evavic44/responsive-navbar-with-dropdown/main/assets/icons/fs.svg" class="icon" />
+                      <div>
+                        <span class="dropdown-link-title">Featured Streams</span>
+                        <p>Leading creatives livestreams</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li role="menuitem">
+                    <a class="dropdown-link" href="#subscriptions">
+                      <img src="https://raw.githubusercontent.com/Evavic44/responsive-navbar-with-dropdown/main/assets/icons/sp.svg" class="icon" />
+                      <div>
+                        <span class="dropdown-link-title">Subscriptions</span>
+                        <p>Gain exclusive access</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li role="menuitem">
+                    <a class="dropdown-link" href="#creative-feed">
+                      <img src="https://raw.githubusercontent.com/Evavic44/responsive-navbar-with-dropdown/main/assets/icons/cf.svg" class="icon" />
+                      <div>
+                        <span class="dropdown-link-title">Creative Feed</span>
+                        <p>See trending creations</p>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+<!--                <ul role="menu">-->
+<!--                  <li class="dropdown-title">-->
+<!--                    <span class="dropdown-link-title">Browse by apps</span>-->
+<!--                  </li>-->
+<!--                  <li role="menuitem">-->
+<!--                    <a class="dropdown-link" href="#adobe-xd">-->
+<!--                      <img src="https://raw.githubusercontent.com/Evavic44/responsive-navbar-with-dropdown/main/assets/icons/xd.svg" />-->
+<!--                      Adobe XD-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li role="menuitem">-->
+<!--                    <a class="dropdown-link" href="#after-effect">-->
+<!--                      <img src="https://raw.githubusercontent.com/Evavic44/responsive-navbar-with-dropdown/main/assets/icons/ae.svg" />-->
+<!--                      After Effect-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li role="menuitem">-->
+<!--                    <a class="dropdown-link" href="#sketch">-->
+<!--                      <img src="https://raw.githubusercontent.com/Evavic44/responsive-navbar-with-dropdown/main/assets/icons/sketch.svg" />-->
+<!--                      Sketch-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li role="menuitem">-->
+<!--                    <a class="dropdown-link" href="#indesign">-->
+<!--                      <img src="https://raw.githubusercontent.com/Evavic44/responsive-navbar-with-dropdown/main/assets/icons/indesign.svg" />-->
+<!--                      Indesign-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li role="menuitem">-->
+<!--                    <a class="dropdown-link" href="#figma">-->
+<!--                      <img src="https://raw.githubusercontent.com/Evavic44/responsive-navbar-with-dropdown/main/assets/icons/figma.svg" />-->
+<!--                      Figma-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                </ul>-->
+              </div>
+            </li>
+            <li>
+
+            </li>
+      <li><a class="nav-link" href="#" onclick="openLivestream()">Livestream</a></li>
+            <!-- Sliding page -->
+  <div id="livestreamPage">
+  <button onclick="closeLivestream()">Close Livestream</button>
+  <h2>Livestream Data</h2>
+<canvas id="heatIndexChart" width="400" height="150" style="border: 1px solid #ddd;"></canvas>
+</div>
+            <li><a class="nav-link" href="/">About</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="nav-end">
+        <div class="right-container">
+          <div>
+  <button class="nav-link dropdown-btn" id="wifi-btn" aria-haspopup="true" aria-expanded="false" aria-label="Wi-Fi" style="display:block;">
+  Wi-Fi
+  <i class="bx bx-wifi" aria-hidden="true"></i>  <!-- Wi-Fi icon -->
+</button>
+  <div class="dropdownwifi" id="wifi-box">Wi-Fi options will appear here</div>
+</div>
+
+<!-- Optional: Add some styles to ensure the icon appears correctly -->
+
+          <a href="#profile" >
+            <img src="https://media.licdn.com/dms/image/v2/D5622AQFJ7WZY1EQT0g/feedshare-shrink_1280/feedshare-shrink_1280/0/1732651957472?e=1738195200&v=beta&t=Hzvkek4RFvWIruwmHsMYjjLaFZn99qHZEWALAivgEAI" style="margin-right:-20px;" width="40" height="40" alt="user image" />
+          </a>
+          <div>
+
+
+    </div>
+        </div>
+        <button id="hamburger" aria-label="hamburger" aria-haspopup="true" aria-expanded="false">
+          <i class="bx bx-menu" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+  </header>
+
+<!-- Page markup: Not important -->
+
+<h2 style="left: 0px; margin-top: 20px;padding-down:30px;">
+  <span style="color: black;font-size:32px;">Atomberg</span>
+  <span style="color: #D4A017;font-size:32px;">Technology</span>
+<!--  <span style="color: black;font-size:32px;"></span>-->
+
+  <span id="username"></span>
+</h2>
+<h2 style="margin-top: -10px;">
+
+<span style="color: black;" id="phone-text">Monitor Bills, Save Money, and Protect the Environment!</span>
+</h2>
+
+
+<div class="scroll">
+        <ul>
+            <li> <img src="/static/images/ac1.avif" alt=""> </li>
+            <li> <img src="/static/images/ac3.jpg" alt=""> </li>
+            <li> <img src="/static/images/maintainance2.jpg" alt=""> </li>
+            <li> <img src="/static/images/bijlibill2.jpg" alt=""> </li>
+            <li> <img src="/static/images/bijlibill1.jpg" alt=""> </li>
+            <li> <img src="/static/images/heatwave1.jpg" alt=""> </li>
+            <li> <img src="/static/images/washing_machine1.jpg" alt=""> </li>
+            <li> <img src="/static/images/ac3.jpg" alt=""> </li>
+            <li> <img src="/static/images/washing_machine2.jpg" alt=""> </li>
+            <li> <img src="/static/images/heatwave2.webp" alt=""> </li>
+            <li> <img src="/static/images/atomfan2.webp" alt=""> </li>
+            <li> <img src="/static/images/atomfan3.webp" alt=""> <li>
+            </li>
+        </ul>
+    </div>
+<div class="container2" >
+  <!-- Appliance Section -->
+  <div class="section" style="margin-top:-10px">
+
+
+    <div id="appliance-container" class="appliance-container">
+      <div class="appliance-box">
+        <input type="text" id="device-name" value="Atomberg Air Conditioner" oninput="updateName(this)" />
+      </div>
+              <button onclick="addAppliance()" style="border:1px solid blue;border-radius:10px; height:24px; width:22px; margin-top:5px;">+</button>
+
+    </div>
+  </div>
+
+  <!-- Health of Device Section -->
+
+
+  <!-- Till Now Bijli Bill Section -->
+  <div class="section">
+    <h3>Till Now Bijli Bill</h3>
+    <div class="row">
+      <div>Power Usage:</div>
+      <div id="power-usage"></div>
+    </div>
+    <div class="row">
+      <div>Bill:</div>
+      <div id="bill"></div>
+    </div>
+  </div>
+<div class="section">
+  <div class="health-heading">Health of Device</div>
+  <div class="health-bar" id="healthcare">
+    <div class="red"></div>
+    <div class="orange"></div>
+    <div class="green"></div>
+  </div>
+</div>
+  <!-- How Much You Can Spend Today Section -->
+  <div class="section">
+    <h3>How Much You Can Spend Today</h3>
+    <div class="row">
+      <label for="money">Money:</label>
+      <input type="number" id="money" class="input-box" placeholder="Enter amount">
+    </div>
+    <div class="row">
+      <div>Estimated Time:</div>
+      <div id="estimated-time"></div>
+    </div>
+  </div>
+
+  <!-- Toggle Buttons Section -->
+  <div class="section">
+    <div class="toggle-buttons">
+      <div class="toggle-button">
+        <span>Alarm Me</span>
+        <div id="alarm-btn" class="circle-btn" onclick="toggleOption('alarm')"></div>
+      </div>
+      <div class="toggle-button">
+        <span>Switch Off</span>
+        <div id="switch-btn" class="circle-btn" onclick="toggleOption('switch')"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="wifi"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Open the Livestream page (slide up)
+  function openLivestream() {
+    document.getElementById('livestreamPage').style.bottom = '0';
+    fetchHeatwaveData(); // Fetch data and update chart
+  }
+
+  // Close the Livestream page (slide down)
+  function closeLivestream() {
+    document.getElementById('livestreamPage').style.bottom = '-100%';
+  }
+
+  // Function to update the bar chart
+  function updateChart(heatwaveindex, temp) {
+    // Get the chart element
+    const ctx = document.getElementById('heatIndexChart').getContext('2d');
+
+    // If the chart already exists, destroy it to create a new one
+    if (window.myChart) {
+      window.myChart.destroy();
+    }
+
+    // Create a new chart
+    window.myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [`Temp: ${temp}`], // Label on x-axis
+        datasets: [{
+          label: 'Heatwave Index',
+          data: [heatwaveindex], // Set heatwave index value
+          backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue color
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: true, // Show legend
+            position: 'top' // Position the legend at the top
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true, // Show x-axis label
+              text: 'Temperature (°C)' // Custom label for x-axis
+            },
+            ticks: {
+              autoSkip: false // Prevent skipping of labels
+            }
+          },
+          y: {
+            title: {
+              display: true, // Show y-axis label
+              text: 'Heatwave Index' // Custom label for y-axis
+            },
+            beginAtZero: true,
+            max: 100, // Adjust based on heatwaveindex range
+            ticks: {
+              stepSize: 10 // Define step size for y-axis ticks
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Function to simulate fetching heatwave data
+  function fetchHeatwaveData() {
+    // Simulated data object
+    const data = {
+      heatwaveindex: 55, // Example heatwave index value
+      temp: 17 // Example temperature value
+    };
+
+    // Update the bar chart with the fetched data
+    updateChart(data.heatwaveindex, data.temp);
+  }
+
+  // Initial setup: Simulate chart update
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchHeatwaveData(); // Update chart with initial data on page load
+  });
+</script>
+
+
+<script>
+    const wifiButton = document.getElementById('wifi-btn');
+    const wifiBox = document.getElementById('wifi-box');
+
+    // Toggle the visibility of the box
+    wifiButton.addEventListener('click', () => {
+      const isVisible = wifiBox.style.display === 'block';
+            wifiButton.style.display = 'block';
+      wifiBox.style.display = isVisible ? 'none' : 'block';
+    });
+
+    // Close the box if clicked outside
+    document.addEventListener('click', (event) => {
+                wifiButton.style.display = 'block';
+
+      if (!wifiButton.contains(event.target) && !wifiBox.contains(event.target)) {
+                  wifiButton.style.display = 'block';
+
+        wifiBox.style.display = 'none';
+                          wifiButton.style.display = 'block';
+
+      }
+    });
+  </script>
+<script !src="">
+  const dropdownBtn = document.querySelectorAll(".dropdown-btn");
+const dropdown = document.querySelectorAll(".dropdown");
+const hamburgerBtn = document.getElementById("hamburger");
+const navMenu = document.querySelector(".menu");
+const links = document.querySelectorAll(".dropdown a");
+
+function setAriaExpandedFalse() {
+  dropdownBtn.forEach((btn) => btn.setAttribute("aria-expanded", "false"));
+}
+
+function closeDropdownMenu() {
+  dropdown.forEach((drop) => {
+    drop.classList.remove("active");
+    drop.addEventListener("click", (e) => e.stopPropagation());
+  });
+}
+
+function toggleHamburger() {
+  navMenu.classList.toggle("show");
+}
+
+dropdownBtn.forEach((btn) => {
+  btn.addEventListener("click", function (e) {
+    const dropdownIndex = e.currentTarget.dataset.dropdown;
+    const dropdownElement = document.getElementById(dropdownIndex);
+
+    dropdownElement.classList.toggle("active");
+    dropdown.forEach((drop) => {
+      if (drop.id !== btn.dataset["dropdown"]) {
+        drop.classList.remove("active");
+      }
+    });
+    e.stopPropagation();
+    btn.setAttribute(
+      "aria-expanded",
+      btn.getAttribute("aria-expanded") === "false" ? "true" : "false"
+    );
+  });
+});
+
+// close dropdown menu when the dropdown links are clicked
+links.forEach((link) =>
+  link.addEventListener("click", () => {
+    closeDropdownMenu();
+    setAriaExpandedFalse();
+    toggleHamburger();
+  })
+);
+
+// close dropdown menu when you click on the document body
+document.documentElement.addEventListener("click", () => {
+  closeDropdownMenu();
+  setAriaExpandedFalse();
+});
+
+// close dropdown when the escape key is pressed
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeDropdownMenu();
+    setAriaExpandedFalse();
+  }
+});
+
+// toggle hamburger menu
+hamburgerBtn.addEventListener("click", toggleHamburger);
+</script>
+
+<script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('active');
+      document.getElementById('overlay').classList.remove('active');
+    }
+  </script>
+<script>
+  // Toggle options between "Alarm Me" and "Switch Off"
+  function toggleOption(option) {
+    const alarmBtn = document.getElementById('alarm-btn');
+    const switchBtn = document.getElementById('switch-btn');
+
+    if (option === 'alarm') {
+      alarmBtn.classList.add('active');
+      switchBtn.classList.remove('active');
+    } else if (option === 'switch') {
+      switchBtn.classList.add('active');
+      alarmBtn.classList.remove('active');
+    }
+  }
+
+  function addAppliance() {
+  const applianceContainer = document.getElementById("appliance-container");
+
+  // Create a new appliance box
+  const newApplianceBox = document.createElement("div");
+  newApplianceBox.classList.add("appliance-box");
+
+  // Create a new text input for the appliance name
+  const newDeviceNameInput = document.createElement("input");
+  newDeviceNameInput.type = "text";
+  newDeviceNameInput.value = "New Appliance";
+  newDeviceNameInput.oninput = function() {
+    updateName(newDeviceNameInput);
+  };
+
+  // Create a remove button
+const removeButton = document.createElement("button");
+removeButton.textContent = "-";
+
+// Apply styles directly
+removeButton.style.border = "1px solid blue";
+removeButton.style.borderRadius = "10px";
+removeButton.style.height = "24px";
+removeButton.style.width = "22px";
+removeButton.style.marginTop = "0px";
+removeButton.style.marginLeft = "3px";
+
+
+// Add the functionality to remove the appliance box
+removeButton.onclick = function() {
+  applianceContainer.removeChild(newApplianceBox);
+};
+
+// Append the remove button to the new appliance box
+newApplianceBox.appendChild(removeButton);
+
+
+  // Append the input and button to the new appliance box
+  newApplianceBox.appendChild(newDeviceNameInput);
+  newApplianceBox.appendChild(removeButton);
+
+  // Append the new appliance box to the container
+  applianceContainer.appendChild(newApplianceBox);
+
+}
+
+
+// Function to update the appliance name (optional logic for demonstration)
+function updateName(input) {
+  console.log("Updated appliance name:", input.value);
+}
+
+</script>
+
+<!--<script type="module">-->
+<!--  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js';-->
+<!--  import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js';-->
+
+<!--  // Your Firebase configuration-->
+<!--  const firebaseConfig = {-->
+<!--    apiKey: "AIzaSyBG7j3q1z1puv9QzOCVpEsRTTTVF1gTn6c",-->
+<!--    authDomain: "prakriti-seva.firebaseapp.com",-->
+<!--    databaseURL: "https://prakriti-seva-default-rtdb.asia-southeast1.firebasedatabase.app",-->
+<!--    projectId: "prakriti-seva",-->
+<!--    storageBucket: "prakriti-seva.firebasestorage.app",-->
+<!--    messagingSenderId: "881315678640",-->
+<!--    appId: "1:881315678640:web:b095e524e0117f0f6c2e75"-->
+<!--  };-->
+
+<!--  // Initialize Firebase-->
+<!--  const app = initializeApp(firebaseConfig);-->
+<!--  const database = getDatabase(app);-->
+
+<!--  // Function to fetch data from Firebase-->
+<!--  function fetchData() {-->
+<!--    const reference = ref(database, 'PrakritiSevak');  // Modify the path to your data location in Firebase Realtime Database-->
+<!--    console.log(reference)-->
+
+<!--    get(reference).then((snapshot) => {-->
+<!--      const data = snapshot.val();-->
+<!--      if (snapshot.exists()) {-->
+<!--        // Update the HTML with fetched data-->
+<!--        document.getElementById('power-usage').textContent = `${data.TotalEnergyUsage || '0'} kWh`;-->
+<!--        document.getElementById('username').textContent = data.username || "";-->
+<!--        document.getElementById('bill').textContent = `₹${data.TotalBill || '0'}`;-->
+<!--        document.getElementById('estimated-time').textContent = `${data.ElectricityCost || '0'} hrs`;-->
+
+<!--if (data.WiFiNetworks && typeof data.WiFiNetworks === 'object') {-->
+<!--  const wifiDiv = document.getElementById('wifi-box');-->
+<!--  wifiDiv.innerHTML = '';  // Clear the existing content-->
+
+<!--  // Add the fake Wi-Fi network "Kashish" with a blue tick-->
+<!--  const fakeNetwork = document.createElement('div');-->
+<!--  fakeNetwork.classList.add('wifi-network');  // Add a class for styling-->
+<!--  fakeNetwork.innerHTML = `<span class="network-name">Kashish</span> <i class="bx bx-check-circle" aria-hidden="true"></i>`;  // Blue tick-->
+<!--  wifiDiv.appendChild(fakeNetwork);  // Add to the box-->
+
+<!--  // Loop through each SSID in the WiFiNetworks object-->
+<!--  for (const ssid in data.WiFiNetworks) {-->
+<!--    if (data.WiFiNetworks.hasOwnProperty(ssid)) {-->
+<!--      const networkElement = document.createElement('div');-->
+<!--      networkElement.classList.add('wifi-network');  // Add a class for styling-->
+<!--      networkElement.textContent = ssid;  // Display SSID (network name)-->
+<!--      wifiDiv.appendChild(networkElement);  // Append each network to the wifi div-->
+<!--    }-->
+<!--  }-->
+<!--} else {-->
+<!--  document.getElementById('wifi-box').textContent = 'No Wi-Fi networks available';-->
+<!--}-->
+
+
+<!--        // Update Temperature (if available in Firebase)-->
+<!--        const temperature = data.Temperature || "N/A";-->
+<!--        console.log("Temperature: ", temperature);-->
+<!--        // Add any relevant UI update for temperature if needed-->
+
+<!--        // Update Health of Device-->
+<!--        const healthData = data.DeviceHealth || {};-->
+<!--        updateHealthBar(healthData);-->
+<!--      } else {-->
+<!--        console.log("No data found in Firebase.");-->
+<!--      }-->
+<!--    }).catch((error) => {-->
+<!--      console.error("Error fetching data: ", error);-->
+<!--    });-->
+<!--  }-->
+
+<!--  // Function to update the health bar-->
+<!--  function updateHealthBar(healthData) {-->
+<!--    const healthBar = document.getElementById('healthcare');-->
+<!--    const redBar = healthBar.querySelector('.red');-->
+<!--    const orangeBar = healthBar.querySelector('.orange');-->
+<!--    const greenBar = healthBar.querySelector('.green');-->
+
+<!--    // Set health status based on data from Firebase-->
+<!--    // Set health status based on data from Firebase-->
+<!--if (healthData.status === 'Critical') {-->
+<!--  redBar.style.display = 'block';-->
+<!--  redBar.style.opacity = '1';  // Fully visible-->
+<!--  orangeBar.style.display = 'block';-->
+<!--  orangeBar.style.opacity = '0.1';  // Slightly transparent-->
+<!--  greenBar.style.display = 'block';-->
+<!--  greenBar.style.opacity = '0.1';  // Slightly transparent-->
+<!--} else if (healthData.status === 'Warning') {-->
+<!--  redBar.style.display = 'block';-->
+<!--  redBar.style.opacity = '0.1';  // Slightly transparent-->
+<!--  orangeBar.style.display = 'block';-->
+<!--  orangeBar.style.opacity = '1';  // Fully visible-->
+<!--  greenBar.style.display = 'block';-->
+<!--  greenBar.style.opacity = '0.1';  // Slightly transparent-->
+<!--} else {-->
+<!--  redBar.style.display = 'block';-->
+<!--  redBar.style.opacity = '0.1';  // Slightly transparent-->
+<!--  orangeBar.style.display = 'block';-->
+<!--  orangeBar.style.opacity = '0.1';  // Slightly transparent-->
+<!--  greenBar.style.display = 'block';-->
+<!--  greenBar.style.opacity = '1';  // Fully visible-->
+<!--}-->
+<!--  }-->
+
+<!--  // Call fetchData() to load data when the page loads-->
+<!--  fetchData();-->
+<!--</script>-->
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js';
+  import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js';
+
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBG7j3q1z1puv9QzOCVpEsRTTTVF1gTn6c",
+    authDomain: "prakriti-seva.firebaseapp.com",
+    databaseURL: "https://prakriti-seva-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "prakriti-seva",
+    storageBucket: "prakriti-seva.firebasestorage.app",
+    messagingSenderId: "881315678640",
+    appId: "1:881315678640:web:b095e524e0117f0f6c2e75"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+
+  // Function to fetch data from Firebase
+  async function fetchData() {
+    const reference = ref(database, 'PrakritiSevak'); // Modify the path to your data location in Firebase
+    try {
+      const snapshot = await get(reference);
+      const data = snapshot.val();
+      if (snapshot.exists()) {
+        // Update the HTML with fetched data
+
+        document.getElementById('power-usage').textContent = `${data.TotalEnergyUsage || '0'} kWh`;
+        document.getElementById('username').textContent = data.username || "";
+        document.getElementById('bill').textContent = `₹${data.TotalBill || '0'}`;
+        document.getElementById('estimated-time').textContent = `${data.ElectricityCost || '0'} hrs`;
+
+
+        // Update Wi-Fi networks
+        if (data.WiFiNetworks && typeof data.WiFiNetworks === 'object') {
+          const wifiDiv = document.getElementById('wifi-box');
+          wifiDiv.innerHTML = ''; // Clear the existing content
+
+          // Add the fake Wi-Fi network "Kashish" with a blue tick
+          const fakeNetwork = document.createElement('div');
+          fakeNetwork.classList.add('wifi-network');
+          fakeNetwork.innerHTML = `<span class="network-name">Kashish</span> <i class="bx bx-check-circle" aria-hidden="true"></i>`;
+          wifiDiv.appendChild(fakeNetwork);
+
+          // Loop through each SSID in the WiFiNetworks object
+          for (const ssid in data.WiFiNetworks) {
+            if (data.WiFiNetworks.hasOwnProperty(ssid)) {
+              const networkElement = document.createElement('div');
+              networkElement.classList.add('wifi-network');
+              networkElement.textContent = ssid;
+              wifiDiv.appendChild(networkElement);
+            }
+          }
+        } else {
+          document.getElementById('wifi-box').textContent = 'No Wi-Fi networks available';
+        }
+
+        // Update Device Health
+        const healthData = data.DeviceHealth || {};
+        updateHealthBar(healthData);
+      } else {
+        console.log("No data found in Firebase.");
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  }
+
+  // Function to update the health bar
+  function updateHealthBar(healthData) {
+    const healthBar = document.getElementById('healthcare');
+    const redBar = healthBar.querySelector('.red');
+    const orangeBar = healthBar.querySelector('.orange');
+    const greenBar = healthBar.querySelector('.green');
+
+    // Set health status based on data from Firebase
+    if (healthData.status === 'Critical') {
+      redBar.style.display = 'block';
+      redBar.style.opacity = '1'; // Fully visible
+      orangeBar.style.display = 'block';
+      orangeBar.style.opacity = '0.1'; // Slightly transparent
+      greenBar.style.display = 'block';
+      greenBar.style.opacity = '0.1'; // Slightly transparent
+    } else if (healthData.status === 'Warning') {
+      redBar.style.display = 'block';
+      redBar.style.opacity = '0.1'; // Slightly transparent
+      orangeBar.style.display = 'block';
+      orangeBar.style.opacity = '1'; // Fully visible
+      greenBar.style.display = 'block';
+      greenBar.style.opacity = '0.1'; // Slightly transparent
+    } else {
+      redBar.style.display = 'block';
+      redBar.style.opacity = '0.1'; // Slightly transparent
+      orangeBar.style.display = 'block';
+      orangeBar.style.opacity = '0.1'; // Slightly transparent
+      greenBar.style.display = 'block';
+      greenBar.style.opacity = '1'; // Fully visible
+    }
+  }
+
+  // Periodically fetch data using setInterval
+  setInterval(fetchData, 5000); // Fetch data every 5 seconds
+</script>
+
+
+
+</body>
+</html>
